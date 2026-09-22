@@ -1,25 +1,29 @@
 #include <Arduino.h>
+
 #include "config.h"
+
+// Componentes: Pantsallita
 
 void setup() {
   Serial.begin(9600);
   Serial.println("hola");
 
-  if(!pantallita.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println(F("Fallo al asignar SSD1306"));
-    Serial.println("enrtre23");
-    for(;;);
-  }
+  iniciarPantalla();
 
-  pantallita.clearDisplay(); // Limpiar buffer
-  pantallita.setTextSize(1); // Tamaño de texto
-  pantallita.setTextColor(SSD1306_WHITE); // Color blanco
-  pantallita.setCursor(0, 0); // Posición inicial (x, y)
-    pantallita.print("Hola");
-  
+  pantallita.clearDisplay();
+  pantallita.setTextSize(1);
+  pantallita.setTextColor(SSD1306_WHITE);
+  pantallita.setCursor(0, 0);
 }
 
 void loop() {
   pantallita.display();
-}
+  leerCorriente();
+  float voltajeLEc = leerVoltaje();
 
+  Serial.print("Voltaje: ");
+  Serial.print(voltajeLEc, 2);
+  Serial.println(" V");
+  pantallita.setCursor(0, 0);
+  pantallita.print(analogRead(voltaje));
+}
