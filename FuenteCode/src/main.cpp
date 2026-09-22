@@ -1,19 +1,26 @@
 #include <Arduino.h>
 #include "aplicacion.h"
 
-// put function declarations here:
-int myFunction(int, int);
+Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600);
+  
+  // Inicializar pantalla en dirección I2C 0x3C
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("Fallo al asignar SSD1306"));
+    for(;;);
+  }
+  
+  display.clearDisplay(); // Limpiar buffer
+  display.setTextSize(1); // Tamaño de texto
+  display.setTextColor(SSD1306_WHITE); // Color blanco
+  display.setCursor(0, 0); // Posición inicial (x, y)
+  display.print(F("Hola, Arduino!"));
+  
+  display.display(); // Mostrar en pantalla
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
